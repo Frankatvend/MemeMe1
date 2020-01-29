@@ -17,15 +17,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var buttomTextField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
-        topTextField.text = "Type in text here"
-        topTextField.textAlignment = .center
-        buttomTextField.text = "Type in text here"
+        self.setTextField()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
     }
 
+    private func setTextField() {
+        topTextField.text = "Type in text here"
+        topTextField.textAlignment = .center
+        
+        buttomTextField.text = "Type in text here"
+        buttomTextField.textAlignment = .center
+    }
+    
     @IBAction func pickAnImageFromAlbum(_ sender: Any) {
         let pickerController = UIImagePickerController()
         pickerController.delegate = self
@@ -42,3 +48,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
 }
 
+extension ViewController: UITextFieldDelegate {
+    
+}

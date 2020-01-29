@@ -13,9 +13,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var ImageView: UIImageView!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     @IBOutlet weak var pickButtom: UIBarButtonItem!
+    @IBOutlet weak var topTextField: UITextField!
+    @IBOutlet weak var buttomTextField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        topTextField.text = "Type in text here"
+        topTextField.textAlignment = .center
+        buttomTextField.text = "Type in text here"
     }
 
     override func viewWillAppear(_ animated: Bool) {

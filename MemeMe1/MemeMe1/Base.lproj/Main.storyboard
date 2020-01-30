@@ -15,13 +15,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Mw-YQ-Qxq">
-                                <rect key="frame" x="0.0" y="44" width="414" height="774"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7Mw-YQ-Qxq">
+                                <rect key="frame" x="0.0" y="44" width="414" height="823"/>
                             </imageView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Dd-3E-ew7">
-                                <rect key="frame" x="0.0" y="818" width="414" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <textField opaque="NO" contentMode="scaleToFill" restorationIdentifier="buttomTextField" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Bottom" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7zq-Ua-EwU">
+                                <rect key="frame" x="111" y="678" width="189" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" restorationIdentifier="topTextField" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Top" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ubQ-Pv-deJ">
+                                <rect key="frame" x="111" y="185" width="189" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Dd-3E-ew7">
+                                <rect key="frame" x="0.0" y="818" width="414" height="49"/>
                                 <items>
                                     <barButtonItem title="Pick" id="5te-BG-vY1">
                                         <connections>
@@ -35,20 +43,23 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" restorationIdentifier="buttomTextField" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Bottom" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7zq-Ua-EwU">
-                                <rect key="frame" x="111" y="678" width="189" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" restorationIdentifier="topTextField" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Top" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ubQ-Pv-deJ">
-                                <rect key="frame" x="111" y="185" width="189" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="7Mw-YQ-Qxq" firstAttribute="top" secondItem="ubQ-Pv-deJ" secondAttribute="bottom" constant="-175" id="06e-wK-POc"/>
+                            <constraint firstAttribute="bottom" secondItem="7zq-Ua-EwU" secondAttribute="bottom" constant="184" id="9N4-0A-d5R"/>
+                            <constraint firstItem="7Mw-YQ-Qxq" firstAttribute="leading" secondItem="5Dd-3E-ew7" secondAttribute="leading" id="9Uj-tz-1Ep"/>
+                            <constraint firstItem="7Mw-YQ-Qxq" firstAttribute="trailing" secondItem="5Dd-3E-ew7" secondAttribute="trailing" id="Ba2-ji-bIF"/>
+                            <constraint firstItem="ubQ-Pv-deJ" firstAttribute="trailing" secondItem="7zq-Ua-EwU" secondAttribute="trailing" id="EYt-pk-1Nb"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ubQ-Pv-deJ" secondAttribute="trailing" constant="114" id="Gt6-6X-uXh"/>
+                            <constraint firstItem="7Mw-YQ-Qxq" firstAttribute="bottom" secondItem="5Dd-3E-ew7" secondAttribute="bottom" id="NSc-Db-1Ed" userLabel="Image View.bottom = Toolbar.top"/>
+                            <constraint firstItem="5Dd-3E-ew7" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Vhk-F9-GFt"/>
+                            <constraint firstItem="5Dd-3E-ew7" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="b4B-WP-Rbu"/>
+                            <constraint firstItem="7Mw-YQ-Qxq" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="cfy-EO-5yW"/>
+                            <constraint firstItem="ubQ-Pv-deJ" firstAttribute="leading" secondItem="7zq-Ua-EwU" secondAttribute="leading" id="kJu-NI-MLS"/>
+                            <constraint firstItem="ubQ-Pv-deJ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="111" id="mH6-OA-G0Z"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="5Dd-3E-ew7" secondAttribute="bottom" constant="-5" id="sEq-Oz-fuu"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>

@@ -8,6 +8,10 @@
 
 import UIKit
 
+extension Notification.Name {
+    public static var RelocateTextfield = Notification.Name.init("RelocateTextfield")
+}
+
 class ViewController: UIViewController, UINavigationControllerDelegate {
 
     @IBOutlet weak var ImageView: UIImageView!
@@ -15,6 +19,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     @IBOutlet weak var pickButtom: UIBarButtonItem!
     @IBOutlet weak var topTextField: UITextField!
     @IBOutlet weak var buttomTextField: UITextField!
+    
+    private var keyboardHeight: CGFloat = 0
     
     let memeTextAttributes: [NSAttributedString.Key: Any] = [
         NSAttributedString.Key.strokeColor: UIColor.black,
@@ -33,12 +39,17 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
         super.viewWillAppear(animated)
         subscribeToKeyboardNotifications()
+        subscribeToTextfieldNotifications()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
 
         super.viewWillDisappear(animated)
         unsubscribeFromKeyboardNotifications()
+    }
+    
+    func subscribeToTextfieldNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(relocateTextfield), name: .RelocateTextfield, object: nil)
     }
     
     func subscribeToKeyboardNotifications() {
@@ -53,12 +64,16 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     @objc func keyboardWillShow(_ notification:Notification) {
-
-        view.frame.origin.y -= getKeyboardHeight(notification)
+        self.keyboardHeight = getKeyboardHeight(notification)
+    }
+    
+    @objc func relocateTextfield() {
+        if view.frame.origin.y >= 0 {
+            view.frame.origin.y -= self.keyboardHeight
+        }
     }
     
     @objc func keyboardWillHide(_ notification:Notification) {
-
         view.frame.origin.y = 0
     }
 
@@ -97,7 +112,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
 extension ViewController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-//        textField.text = ""
+        if textField == buttomTextField {
+            NotificationCenter.default.post(.init(name: .RelocateTextfield))
+        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

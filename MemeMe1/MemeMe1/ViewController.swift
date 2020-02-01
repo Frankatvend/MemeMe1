@@ -14,11 +14,13 @@ extension Notification.Name {
 
 class ViewController: UIViewController, UINavigationControllerDelegate {
 
-    @IBOutlet weak var ImageView: UIImageView!
+    @IBOutlet weak var shareButton: UIButton!
+    @IBOutlet weak var toolBar: UIToolbar!
+    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     @IBOutlet weak var pickButtom: UIBarButtonItem!
     @IBOutlet weak var topTextField: UITextField!
-    @IBOutlet weak var buttomTextField: UITextField!
+    @IBOutlet weak var bottomTextField: UITextField!
     
     private var keyboardHeight: CGFloat = 0
     
@@ -26,13 +28,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         NSAttributedString.Key.strokeColor: UIColor.black,
         NSAttributedString.Key.foregroundColor: UIColor.white,
         NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-        NSAttributedString.Key.strokeWidth: 2
+        NSAttributedString.Key.strokeWidth: 5
     ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setTextField(topTextField)
-        self.setTextField(buttomTextField)
+        setTextField(topTextField)
+        setTextField(bottomTextField)
+        updateShareButton()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -90,6 +93,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         textField.delegate = self
         textField.defaultTextAttributes = memeTextAttributes
         textField.autocapitalizationType = .allCharacters
+        textField.borderStyle = .none
     }
     
     @IBAction func pickAnImageFromAlbum(_ sender: Any) {
@@ -107,12 +111,54 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         present(pickerController, animated: true, completion: nil)
     }
     
+    func generateMemedImage() -> UIImage {
+
+        // Hide toolbar and navbar
+        self.toolBar.isHidden = true
+
+        // Render view to an image
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
+        let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+
+        // Show toolbar and navbar
+        self.toolBar.isHidden = false
+
+        return memedImage
+    }
+    
+    func save(_ memedImage: UIImage) {
+        // Create the meme
+        let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imageView.image!, memedImage: memedImage)
+    }
+    
+    @IBAction func shareMemedImage() {
+        let memedImage = generateMemedImage()
+        let v = UIActivityViewController.init(activityItems: [memedImage], applicationActivities: nil)
+        v.completionWithItemsHandler = { [weak self]
+            (activity, success, items, error) in
+            guard let this = self else { return }
+            if success == true, let image = items?[0] as? UIImage{
+                this.save(image)
+            }
+        }
+        present(v, animated: true)
+    }
+    
+    func updateShareButton() {
+        if let _ = imageView.image {
+            shareButton.isEnabled = true
+        } else {
+            shareButton.isEnabled = false
+        }
+    }
 }
 
 extension ViewController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == buttomTextField {
+        if textField == bottomTextField {
             NotificationCenter.default.post(.init(name: .RelocateTextfield))
         }
     }
@@ -126,8 +172,9 @@ extension ViewController: UIImagePickerControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[.originalImage] as? UIImage {
-            ImageView.image = image
+            imageView.image = image
         }
+        updateShareButton()
         picker.dismiss(animated: true, completion: nil)
     }
 }

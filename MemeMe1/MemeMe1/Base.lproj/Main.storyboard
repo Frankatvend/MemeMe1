@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -43,6 +43,13 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zgH-pO-a6P">
+                                <rect key="frame" x="354" y="44" width="40" height="30"/>
+                                <state key="normal" title="Share"/>
+                                <connections>
+                                    <action selector="shareMemedImage" destination="BYZ-38-t0r" eventType="touchUpInside" id="iN5-5n-ABE"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -52,21 +59,25 @@
                             <constraint firstItem="7Mw-YQ-Qxq" firstAttribute="trailing" secondItem="5Dd-3E-ew7" secondAttribute="trailing" id="Ba2-ji-bIF"/>
                             <constraint firstItem="ubQ-Pv-deJ" firstAttribute="trailing" secondItem="7zq-Ua-EwU" secondAttribute="trailing" id="EYt-pk-1Nb"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ubQ-Pv-deJ" secondAttribute="trailing" constant="114" id="Gt6-6X-uXh"/>
+                            <constraint firstItem="7Mw-YQ-Qxq" firstAttribute="top" secondItem="zgH-pO-a6P" secondAttribute="bottom" constant="-30" id="JS8-CZ-zDm"/>
                             <constraint firstItem="7Mw-YQ-Qxq" firstAttribute="bottom" secondItem="5Dd-3E-ew7" secondAttribute="bottom" id="NSc-Db-1Ed" userLabel="Image View.bottom = Toolbar.top"/>
+                            <constraint firstItem="7Mw-YQ-Qxq" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="TIH-g2-Qq6"/>
                             <constraint firstItem="5Dd-3E-ew7" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Vhk-F9-GFt"/>
                             <constraint firstItem="5Dd-3E-ew7" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="b4B-WP-Rbu"/>
-                            <constraint firstItem="7Mw-YQ-Qxq" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="cfy-EO-5yW"/>
                             <constraint firstItem="ubQ-Pv-deJ" firstAttribute="leading" secondItem="7zq-Ua-EwU" secondAttribute="leading" id="kJu-NI-MLS"/>
                             <constraint firstItem="ubQ-Pv-deJ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="111" id="mH6-OA-G0Z"/>
                             <constraint firstAttribute="bottomMargin" secondItem="5Dd-3E-ew7" secondAttribute="bottom" constant="-5" id="sEq-Oz-fuu"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="zgH-pO-a6P" secondAttribute="trailing" id="x3N-SL-0GC"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="ImageView" destination="7Mw-YQ-Qxq" id="MTD-5t-sAa"/>
-                        <outlet property="buttomTextField" destination="7zq-Ua-EwU" id="mEh-Hd-nhb"/>
+                        <outlet property="bottomTextField" destination="7zq-Ua-EwU" id="mEh-Hd-nhb"/>
                         <outlet property="cameraButton" destination="8DJ-ho-mRR" id="vcE-Pj-H9h"/>
+                        <outlet property="imageView" destination="7Mw-YQ-Qxq" id="MTD-5t-sAa"/>
                         <outlet property="pickButtom" destination="5te-BG-vY1" id="XIu-GL-nYs"/>
+                        <outlet property="shareButton" destination="zgH-pO-a6P" id="NWu-nN-9z7"/>
+                        <outlet property="toolBar" destination="5Dd-3E-ew7" id="A08-LV-5ct"/>
                         <outlet property="topTextField" destination="ubQ-Pv-deJ" id="4gF-Dl-LG2"/>
                     </connections>
                 </viewController>

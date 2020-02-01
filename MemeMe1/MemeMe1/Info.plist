@@ -64,5 +64,7 @@
 	<string>For test</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>For test</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>For test</string>
 </dict>
 </plist>

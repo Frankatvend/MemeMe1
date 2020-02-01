@@ -13,6 +13,7 @@
 		64E1271723D80C7400264B77 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 64E1271523D80C7400264B77 /* Main.storyboard */; };
 		64E1271923D80C7800264B77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64E1271823D80C7800264B77 /* Assets.xcassets */; };
 		64E1271C23D80C7800264B77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 64E1271A23D80C7800264B77 /* LaunchScreen.storyboard */; };
+		9ECA24C723E560A6009E8828 /* MemeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ECA24C623E560A6009E8828 /* MemeViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		64E1271823D80C7800264B77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		64E1271B23D80C7800264B77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		64E1271D23D80C7800264B77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9ECA24C623E560A6009E8828 /* MemeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemeViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				64E1271823D80C7800264B77 /* Assets.xcassets */,
 				64E1271A23D80C7800264B77 /* LaunchScreen.storyboard */,
 				64E1271D23D80C7800264B77 /* Info.plist */,
+				9ECA24C623E560A6009E8828 /* MemeViewModel.swift */,
 			);
 			path = MemeMe1;
 			sourceTree = "<group>";
@@ -140,6 +143,7 @@
 			files = (
 				64E1271423D80C7400264B77 /* ViewController.swift in Sources */,
 				64E1271023D80C7400264B77 /* AppDelegate.swift in Sources */,
+				9ECA24C723E560A6009E8828 /* MemeViewModel.swift in Sources */,
 				64E1271223D80C7400264B77 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

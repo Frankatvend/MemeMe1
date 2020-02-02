@@ -64,6 +64,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     }()
     private var topTextField = UITextField()
     private var bottomTextField = UITextField()
+    private let topTextFieldPlaceHolder = "TOP"
+    private let bottomTextFieldPlaceHolder = "BOTTOM"
     
     // MARK: ToolBarConstraints
     private var topToolBarHeightConstraint: Constraint?
@@ -175,7 +177,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     }
 
     private func setTextField(_ textField: UITextField) {
-        textField.placeholder = "Type in text here"
+        if textField == topTextField {
+            textField.text = topTextFieldPlaceHolder
+        } else {
+            textField.text = bottomTextFieldPlaceHolder
+        }
         textField.defaultTextAttributes = memeTextAttributes
         textField.textAlignment = .center
         textField.delegate = self
@@ -258,10 +264,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     @objc func cancelEdit() {
         /// Reset everything
         imageView.image = nil
-        topTextField.text = ""
-        topTextField.placeholder = "Type in text here"
-        bottomTextField.text = ""
-        bottomTextField.placeholder = "Type in text here"
+        topTextField.text = topTextFieldPlaceHolder
+        bottomTextField.text = bottomTextFieldPlaceHolder
         updateShareButton()
     }
 }
@@ -269,13 +273,23 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
 extension ViewController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField.text == topTextFieldPlaceHolder || textField.text == bottomTextFieldPlaceHolder {
+            textField.text = ""
+        }
         if textField == bottomTextField {
             NotificationCenter.default.post(.init(name: .RelocateTextfield))
         }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        view.endEditing(true)
+        if textField.text == "" {
+            if textField == topTextField {
+                textField.text = topTextFieldPlaceHolder
+            } else {
+                textField.text = bottomTextFieldPlaceHolder
+            }
+        }
+        return view.endEditing(true)
     }
 }
 

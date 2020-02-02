@@ -98,18 +98,18 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         textStackView.addArrangedSubview(bottomTextField)
         
         topToolBar.snp.makeConstraints { (make) in
-            make.top.left.right.equalTo(self.view)
+            make.top.left.right.equalToSuperview()
             topToolBarHeightConstraint = make.height.equalTo(0).constraint
         }
         
         bottomToolBar.snp.makeConstraints { (make) in
-            make.bottom.left.right.equalTo(self.view)
+            make.bottom.left.right.equalToSuperview()
             bottomToolBarHeightConstraint = make.height.equalTo(0).constraint
         }
         
         imageView.snp.makeConstraints { (make) in
             make.top.equalTo(topToolBar.snp.bottom)
-            make.left.right.equalTo(self.view)
+            make.left.right.equalToSuperview()
             make.bottom.equalTo(bottomToolBar.snp.top)
         }
         
@@ -130,7 +130,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     override func viewWillDisappear(_ animated: Bool) {
 
         super.viewWillDisappear(animated)
-        unsubscribeFromKeyboardNotifications()
+        unsubscribeFromAllNotifications()
     }
     
     private func setToolBar(toolBar: UIToolbar, items: [UIBarButtonItem]) {
@@ -150,7 +150,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
-    func unsubscribeFromKeyboardNotifications() {
+    func unsubscribeFromAllNotifications() {
         /// Remove all the observers
         NotificationCenter.default.removeObserver(self)
     }

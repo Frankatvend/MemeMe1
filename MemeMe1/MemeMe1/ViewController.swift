@@ -65,6 +65,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     private var topTextField = UITextField()
     private var bottomTextField = UITextField()
     
+    // MARK: ToolBarConstraints
+    private var topToolBarHeightConstraint: Constraint?
+    private var bottomToolBarHeightConstraint: Constraint?
+    
     private var keyboardHeight: CGFloat = 0
     
     let memeTextAttributes: [NSAttributedString.Key: Any] = [
@@ -93,12 +97,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         
         topToolBar.snp.makeConstraints { (make) in
             make.top.left.right.equalTo(self.view)
-            make.height.equalTo(50)
+            topToolBarHeightConstraint = make.height.equalTo(0).constraint
         }
         
         bottomToolBar.snp.makeConstraints { (make) in
             make.bottom.left.right.equalTo(self.view)
-            make.height.equalTo(50)
+            bottomToolBarHeightConstraint = make.height.equalTo(0).constraint
         }
         
         imageView.snp.makeConstraints { (make) in
@@ -110,6 +114,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         textStackView.snp.makeConstraints { (make) in
             make.top.left.right.bottom.equalTo(imageView)
         }
+        
+        showToolBars()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -195,8 +201,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     func generateMemedImage() -> UIImage {
 
         // Hide toolbars
-        self.topToolBar.isHidden = true
-        self.bottomToolBar.isHidden = true
+        hideToolBars()
 
         // Render view to an image
         UIGraphicsBeginImageContext(self.view.frame.size)
@@ -205,10 +210,23 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         UIGraphicsEndImageContext()
 
         // Show toolbars
-        self.topToolBar.isHidden = false
-        self.bottomToolBar.isHidden = false
+        showToolBars()
 
         return memedImage
+    }
+    
+    func showToolBars() {
+        self.topToolBar.isHidden = false
+        self.bottomToolBar.isHidden = false
+        topToolBarHeightConstraint?.deactivate()
+        bottomToolBarHeightConstraint?.deactivate()
+    }
+    
+    func hideToolBars() {
+        self.topToolBar.isHidden = true
+        self.bottomToolBar.isHidden = true
+        topToolBarHeightConstraint?.activate()
+        bottomToolBarHeightConstraint?.activate()
     }
     
     func save(_ memedImage: UIImage) {
@@ -238,7 +256,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     @objc func cancelEdit() {
-        /// Currently do nothing
+        /// Reset everything
+        imageView.image = nil
+        topTextField.text = ""
+        topTextField.placeholder = "Type in text here"
+        bottomTextField.text = ""
+        bottomTextField.placeholder = "Type in text here"
+        updateShareButton()
     }
 }
 

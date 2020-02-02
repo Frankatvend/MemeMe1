@@ -6,7 +6,9 @@
 //  Copyright © 2020 vend. All rights reserved.
 //
 
+import Foundation
 import UIKit
+import SnapKit
 
 extension Notification.Name {
     public static var RelocateTextfield = Notification.Name.init("RelocateTextfield")
@@ -14,13 +16,41 @@ extension Notification.Name {
 
 class ViewController: UIViewController, UINavigationControllerDelegate {
 
-    @IBOutlet weak var shareButton: UIButton!
-    @IBOutlet weak var toolBar: UIToolbar!
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var cameraButton: UIBarButtonItem!
-    @IBOutlet weak var pickButtom: UIBarButtonItem!
-    @IBOutlet weak var topTextField: UITextField!
-    @IBOutlet weak var bottomTextField: UITextField!
+    
+    private var navBar = UIToolbar()
+    let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
+    private lazy var shareButton: UIBarButtonItem = {
+        let b = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareMemedImage))
+        b.style = .plain
+        return b
+    }()
+    private lazy var cancelButton: UIBarButtonItem = {
+        let b = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelEdit))
+        b.style = .plain
+        return b
+    }()
+    
+    // MARK: BottomToolBarItems
+    private var bottomToolBar = UIToolbar()
+    private lazy var pickButtom: UIBarButtonItem = {
+        let b = UIButton(frame: .zero)
+        b.setTitle("Album", for: .normal)
+        b.setTitleColor(.blue, for: .normal)
+        b.addTarget(self, action: #selector(pickAnImageFromAlbum), for: .touchUpInside)
+        let bi = UIBarButtonItem(customView: b)
+        bi.style = .plain
+        return bi
+    }()
+    
+    private var cameraButton: UIBarButtonItem = {
+        let b = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(pickAnImageFromCamera))
+        b.style = .plain
+        return b
+    }()
+    
+    private var imageView = UIImageView()
+    private var topTextField = UITextField()
+    private var bottomTextField = UITextField()
     
     private var keyboardHeight: CGFloat = 0
     
@@ -35,7 +65,39 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         super.viewDidLoad()
         setTextField(topTextField)
         setTextField(bottomTextField)
+        setToolBar(toolBar: navBar, items: [shareButton, flexibleSpace, cancelButton])
+        setToolBar(toolBar: bottomToolBar, items: [flexibleSpace, cameraButton, flexibleSpace, pickButtom, flexibleSpace])
         updateShareButton()
+        view.backgroundColor = .white
+        
+        
+        
+        view.addSubview(navBar)
+        view.addSubview(imageView)
+        view.addSubview(bottomToolBar)
+        
+        
+        imageView.backgroundColor = .red
+        
+        navBar.snp.makeConstraints { (make) in
+            make.top.left.right.equalTo(self.view)
+            make.height.equalTo(50)
+        }
+        
+        bottomToolBar.snp.makeConstraints { (make) in
+            make.bottom.left.right.equalTo(self.view)
+            make.height.equalTo(50)
+        }
+        
+        imageView.snp.makeConstraints { (make) in
+            make.top.equalTo(navBar.snp.bottom)
+            make.left.right.equalTo(self.view)
+            make.bottom.equalTo(bottomToolBar.snp.top)
+        }
+        
+        
+        
+        
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -49,6 +111,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
 
         super.viewWillDisappear(animated)
         unsubscribeFromKeyboardNotifications()
+    }
+    
+    private func setToolBar(toolBar: UIToolbar, items: [UIBarButtonItem]) {
+        toolBar.setItems(items, animated: false)
+        toolBar.sizeToFit()
+        toolBar.center = CGPoint(x: view.frame.width/2, y: 0)
+        toolBar.backgroundColor = .darkGray
     }
     
     func subscribeToTextfieldNotifications() {
@@ -96,14 +165,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         textField.borderStyle = .none
     }
     
-    @IBAction func pickAnImageFromAlbum(_ sender: Any) {
+    @objc func pickAnImageFromAlbum(_ sender: Any) {
         let pickerController = UIImagePickerController()
         pickerController.delegate = self
         pickerController.sourceType = .photoLibrary
         present(pickerController, animated: true, completion: nil)
     }
     
-    @IBAction func pickAnImageFromCamera(_ sender: Any) {
+    @objc func pickAnImageFromCamera(_ sender: Any) {
         let pickerController = UIImagePickerController()
         pickerController.delegate = self
         pickerController.sourceType = .camera
@@ -114,7 +183,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     func generateMemedImage() -> UIImage {
 
         // Hide toolbar and navbar
-        self.toolBar.isHidden = true
+        self.bottomToolBar.isHidden = true
 
         // Render view to an image
         UIGraphicsBeginImageContext(self.view.frame.size)
@@ -123,7 +192,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         UIGraphicsEndImageContext()
 
         // Show toolbar and navbar
-        self.toolBar.isHidden = false
+        self.bottomToolBar.isHidden = false
 
         return memedImage
     }
@@ -133,7 +202,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imageView.image!, memedImage: memedImage)
     }
     
-    @IBAction func shareMemedImage() {
+    @objc func shareMemedImage() {
         let memedImage = generateMemedImage()
         let v = UIActivityViewController.init(activityItems: [memedImage], applicationActivities: nil)
         v.completionWithItemsHandler = { [weak self]
@@ -152,6 +221,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         } else {
             shareButton.isEnabled = false
         }
+    }
+    
+    @objc func cancelEdit() {
+        
     }
 }
 

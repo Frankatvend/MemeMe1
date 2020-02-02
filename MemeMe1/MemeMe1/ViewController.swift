@@ -49,14 +49,26 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     }()
     
     // MARK: ImageViewItems
-    private var imageView = UIImageView()
+    private var imageView: UIImageView = {
+        let i = UIImageView(frame: .zero)
+        i.backgroundColor = .black
+        return i
+    }()
+    private lazy var textStackView: UIStackView = {
+      let stack = UIStackView(frame: .zero)
+      stack.alignment = .center
+        stack.axis = .vertical
+      stack.spacing = 5
+      stack.distribution = .equalSpacing
+      return stack
+    }()
     private var topTextField = UITextField()
     private var bottomTextField = UITextField()
     
     private var keyboardHeight: CGFloat = 0
     
     let memeTextAttributes: [NSAttributedString.Key: Any] = [
-        NSAttributedString.Key.strokeColor: UIColor.black,
+        NSAttributedString.Key.strokeColor: UIColor.white,
         NSAttributedString.Key.foregroundColor: UIColor.white,
         NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
         NSAttributedString.Key.strokeWidth: 5
@@ -71,14 +83,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         updateShareButton()
         view.backgroundColor = .white
         
-        
-        
         view.addSubview(topToolBar)
         view.addSubview(imageView)
         view.addSubview(bottomToolBar)
+        view.addSubview(textStackView)
         
-        
-        imageView.backgroundColor = .red
+        textStackView.addArrangedSubview(topTextField)
+        textStackView.addArrangedSubview(bottomTextField)
         
         topToolBar.snp.makeConstraints { (make) in
             make.top.left.right.equalTo(self.view)
@@ -96,9 +107,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
             make.bottom.equalTo(bottomToolBar.snp.top)
         }
         
-        
-        
-        
+        textStackView.snp.makeConstraints { (make) in
+            make.top.left.right.bottom.equalTo(imageView)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -159,9 +170,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
 
     private func setTextField(_ textField: UITextField) {
         textField.placeholder = "Type in text here"
+        textField.defaultTextAttributes = memeTextAttributes
         textField.textAlignment = .center
         textField.delegate = self
-        textField.defaultTextAttributes = memeTextAttributes
         textField.autocapitalizationType = .allCharacters
         textField.borderStyle = .none
     }
@@ -183,7 +194,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     
     func generateMemedImage() -> UIImage {
 
-        // Hide toolbar and navbar
+        // Hide toolbars
+        self.topToolBar.isHidden = true
         self.bottomToolBar.isHidden = true
 
         // Render view to an image
@@ -192,7 +204,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
 
-        // Show toolbar and navbar
+        // Show toolbars
+        self.topToolBar.isHidden = false
         self.bottomToolBar.isHidden = false
 
         return memedImage
@@ -225,7 +238,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     @objc func cancelEdit() {
-        
+        /// Currently do nothing
     }
 }
 

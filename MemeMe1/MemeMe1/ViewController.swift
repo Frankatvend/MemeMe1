@@ -16,8 +16,8 @@ extension Notification.Name {
 
 class ViewController: UIViewController, UINavigationControllerDelegate {
 
-    
-    private var navBar = UIToolbar()
+    // MARK: TopToolBarItems
+    private var topToolBar = UIToolbar()
     let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
     private lazy var shareButton: UIBarButtonItem = {
         let b = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareMemedImage))
@@ -48,6 +48,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         return b
     }()
     
+    // MARK: ImageViewItems
     private var imageView = UIImageView()
     private var topTextField = UITextField()
     private var bottomTextField = UITextField()
@@ -65,21 +66,21 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         super.viewDidLoad()
         setTextField(topTextField)
         setTextField(bottomTextField)
-        setToolBar(toolBar: navBar, items: [shareButton, flexibleSpace, cancelButton])
+        setToolBar(toolBar: topToolBar, items: [shareButton, flexibleSpace, cancelButton])
         setToolBar(toolBar: bottomToolBar, items: [flexibleSpace, cameraButton, flexibleSpace, pickButtom, flexibleSpace])
         updateShareButton()
         view.backgroundColor = .white
         
         
         
-        view.addSubview(navBar)
+        view.addSubview(topToolBar)
         view.addSubview(imageView)
         view.addSubview(bottomToolBar)
         
         
         imageView.backgroundColor = .red
         
-        navBar.snp.makeConstraints { (make) in
+        topToolBar.snp.makeConstraints { (make) in
             make.top.left.right.equalTo(self.view)
             make.height.equalTo(50)
         }
@@ -90,7 +91,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         }
         
         imageView.snp.makeConstraints { (make) in
-            make.top.equalTo(navBar.snp.bottom)
+            make.top.equalTo(topToolBar.snp.bottom)
             make.left.right.equalTo(self.view)
             make.bottom.equalTo(bottomToolBar.snp.top)
         }

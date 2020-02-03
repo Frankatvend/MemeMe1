@@ -52,6 +52,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     private var imageView: UIImageView = {
         let i = UIImageView(frame: .zero)
         i.backgroundColor = .black
+        i.contentMode = .scaleAspectFit
         return i
     }()
     private lazy var textStackView: UIStackView = {

@@ -77,13 +77,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         NSAttributedString.Key.strokeColor: UIColor.white,
         NSAttributedString.Key.foregroundColor: UIColor.white,
         NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-        NSAttributedString.Key.strokeWidth: 5
+        NSAttributedString.Key.strokeWidth: -5
     ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setTextField(topTextField)
-        setTextField(bottomTextField)
+        setTextField(topTextField, topTextFieldPlaceHolder)
+        setTextField(bottomTextField, bottomTextFieldPlaceHolder)
         setToolBar(toolBar: topToolBar, items: [shareButton, flexibleSpace, cancelButton])
         setToolBar(toolBar: bottomToolBar, items: [flexibleSpace, cameraButton, flexibleSpace, pickButtom, flexibleSpace])
         updateShareButton()
@@ -117,7 +117,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
             make.top.left.right.bottom.equalTo(imageView)
         }
         
-        showToolBars()
+        showToolBars(shouldShow: true)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -176,12 +176,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         return keyboardSize.cgRectValue.height
     }
 
-    private func setTextField(_ textField: UITextField) {
-        if textField == topTextField {
-            textField.text = topTextFieldPlaceHolder
-        } else {
-            textField.text = bottomTextFieldPlaceHolder
-        }
+    private func setTextField(_ textField: UITextField, _ defaultText: String) {
+        textField.text = defaultText
         textField.defaultTextAttributes = memeTextAttributes
         textField.textAlignment = .center
         textField.delegate = self
@@ -190,24 +186,24 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     @objc func pickAnImageFromAlbum(_ sender: Any) {
-        let pickerController = UIImagePickerController()
-        pickerController.delegate = self
-        pickerController.sourceType = .photoLibrary
-        present(pickerController, animated: true, completion: nil)
+        presentImagePickerWith(sourceType: .photoLibrary)
     }
     
     @objc func pickAnImageFromCamera(_ sender: Any) {
+        presentImagePickerWith(sourceType: .camera)
+    }
+    
+    private func presentImagePickerWith(sourceType: UIImagePickerControllerSourceType) {
         let pickerController = UIImagePickerController()
         pickerController.delegate = self
-        pickerController.sourceType = .camera
-        pickerController.showsCameraControls = true
+        pickerController.sourceType = sourceType
         present(pickerController, animated: true, completion: nil)
     }
     
     func generateMemedImage() -> UIImage {
 
         // Hide toolbars
-        hideToolBars()
+        showToolBars(shouldShow: false)
 
         // Render view to an image
         UIGraphicsBeginImageContext(self.view.frame.size)
@@ -216,23 +212,16 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         UIGraphicsEndImageContext()
 
         // Show toolbars
-        showToolBars()
+        showToolBars(shouldShow: true)
 
         return memedImage
     }
     
-    func showToolBars() {
-        self.topToolBar.isHidden = false
-        self.bottomToolBar.isHidden = false
-        topToolBarHeightConstraint?.deactivate()
-        bottomToolBarHeightConstraint?.deactivate()
-    }
-    
-    func hideToolBars() {
-        self.topToolBar.isHidden = true
-        self.bottomToolBar.isHidden = true
-        topToolBarHeightConstraint?.activate()
-        bottomToolBarHeightConstraint?.activate()
+    func showToolbars(shouldShow: Boolean) {
+      self.topToolbar.isHidden = shouldShow
+      self.bottomToolbar.isHidden = shouldShow
+      shouldShow ? topToolBarHeightConstrain?.deactivate() : topToolBarHeightConstrain?.activate()
+      shouldShow ? bottomToolbarHeightConstraint?.deactivate() : bottomToolbarHeightConstraint?.activate()
     }
     
     func save(_ memedImage: UIImage) {
@@ -254,11 +243,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     func updateShareButton() {
-        if let _ = imageView.image {
-            shareButton.isEnabled = true
-        } else {
-            shareButton.isEnabled = false
-        }
+        shareButton.isEnabled = imageView.image == nil
     }
     
     @objc func cancelEdit() {
